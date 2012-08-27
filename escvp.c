@@ -28,7 +28,7 @@
 
 static bool debug;
 
-static int escvp_attach(struct usb_serial *serial);
+static int escvp_startup(struct usb_serial *serial);
 
 static const struct usb_device_id id_table[] = {
   { USB_DEVICE(VENDOR_ID, PRODUCT_ID) },
