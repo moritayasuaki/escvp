@@ -44,7 +44,7 @@ static struct usb_serial_driver escvp_device = {
   },
   .id_table = id_table,
   .num_ports = 1,
-  .attach = escvp_attach,
+  .attach = escvp_startup,
 };
 
 static struct usb_serial_driver * const serial_drivers[] = {
