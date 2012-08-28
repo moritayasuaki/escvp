@@ -1,5 +1,4 @@
 obj-m := escvp.o
-escvp_usb-m := escvp.o
 
 all:
 	make -C /lib/modules/`uname -r`/build M=`pwd` modules

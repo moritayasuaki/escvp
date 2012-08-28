@@ -61,13 +61,20 @@ static int escvp_startup(struct usb_serial *serial)
   return 0;
 }
 
+static int __init escvp_init(void)
+{
+  return usb_serial_register(&escvp_device);
+}
 
-module_usb_serial_driver(serial_drivers, id_table);
+static void __exit escvp_exit(void)
+{
+  usb_serial_deregister(&escvp_device);
+}
+
+module_init(escvp_init);
+module_exit(escvp_exit);
 
 MODULE_AUTHOR(DRIVER_AUTHOR);
 MODULE_DESCRIPTION(DRIVER_DESC);
 MODULE_VERSION(DRIVER_VERSION);
 MODULE_LICENSE("GPL");
-
-module_param(debug, bool, S_IRUGO | S_IWUSR);
-MODULE_PARM_DESC(debug, "Enable debug");
