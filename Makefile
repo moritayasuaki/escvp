@@ -1,7 +1,10 @@
 obj-m := escvp.o
+KDIR := /lib/modules/$(shell uname -r)/build
+PWD := $(shell pwd)
 
 all:
-	make -C /lib/modules/`uname -r`/build M=`pwd` modules
+	$(MAKE) -C $(KDIR) SUBDIRS=$(PWD) modules
 
 clean:
-	rm -f escvp.o escvp.ko escvp.mod.* modules.* Module.*
+	$(MAKE) -C $(KDIR) SUBDIRS=$(PWD) clean
+
