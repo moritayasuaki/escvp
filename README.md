@@ -34,3 +34,15 @@ a device file will be created as ttyUSB port.
 /dev/ttyUSB0
 # echo -e "ver?\r" > /dev/ttyUSB0 && cat -A /dev/ttyUSB0
 ```
+
+Power on projector
+```
+$ echo $'PWR ON\r' | sudo tee /dev/ttyUSB0 
+```
+
+Power off projector
+```
+$ echo $'PWR OFF\r' | sudo tee /dev/ttyUSB0 
+```
+
+More commands: [EPSON ESC/VP21 Command User’s Guide](https://www.epson.com/cgi-bin/Store/support/supAdvice.jsp?type=highlights&noteoid=184486)
