@@ -198,10 +198,15 @@ static int escvp_get_rdlen(struct escvp_port *vport)
 }
 
 
-
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,14,0)
 static void escvp_get_rdlen_poll(unsigned long arg)
 {
   struct escvp_port *vport = (struct escvp_port *) arg;
+#else
+static void escvp_get_rdlen_poll(struct timer_list *t)
+{
+  struct escvp_port *vport = from_timer(vport, t, poll_timer);
+#endif
   escvp_get_rdlen(vport);
   mod_timer(&vport->poll_timer, jiffies + msecs_to_jiffies(poll_ms));
 }
@@ -229,12 +234,16 @@ static int escvp_port_probe(struct usb_serial_port *port)
     status = -ENOMEM;
     goto error;
   }
+#if LINUX_VERSION_CODE < KERNEL_VERSION(4,14,0)
   init_timer(&vport->poll_timer);
   vport->poll_timer.function = escvp_get_rdlen_poll;
   vport->poll_timer.expires =
     jiffies + msecs_to_jiffies(poll_ms);
   vport->poll_timer.data = (unsigned long)vport;
   add_timer(&vport->poll_timer);
+#else
+  timer_setup(&vport->poll_timer, escvp_get_rdlen_poll, 0);
+#endif
   return 0;
 error:
   kfree(vport->dr);
